@@ -1,25 +1,27 @@
 # Bypass Same Origin Policy - BY-SOP
 
-Bypass Same Origin Policy with DNS-rebinding to retreive local server file.
+Bypass Same Origin Policy with DNS-rebinding to retrieve local server file.
 
 **Goal** : retrieve a file on a private server http://127.0.0.1/secret.txt 
-This normaly should by impossible due to [Same Origin Policy](https://en.wikipedia.org/wiki/Same-origin_policy) but we will use DNS-rebinding attack to bypass the SOP and retreive the file.
+This normaly should by impossible due to [Same Origin Policy](https://en.wikipedia.org/wiki/Same-origin_policy) but we will use [DNS-rebinding](https://en.wikipedia.org/wiki/DNS_rebinding) attack to bypass the SOP and retrieve the file.
+
+> This attack can be used to breach a private network by causing the victim's web browser to access machines at private IP addresses and returning the results to the attacker.
 
 ![BY-SOP](BY-SOP.jpg)
 
-### Victim
+### Victim:
 
-- visite the malicious page for at least ~2-3 minutes (playing flash game, fill a form etc)
+- visit the malicious page for at least ~2-3 minutes (playing flash game, fill a form etc)
 
-### Attacker
+### Attacker:
     
-* attacker setup a domain with a the lowest TTL (60 second, 120 for CloudFlare )
+* attacker setup a domain with the lowest TTL (60 second, 120 for CloudFlare )
 * one the victim visit the malicious page, he changes the dns IP of the domain with the local ip targeted
 
     - before `foo.domain.com. 59  IN  A   5.135.66.45`
     - after  `foo.domain.com. 59  IN  A   127.0.0.1`
 
-    Since the `TTL` is very short, the attacker will make another request to retreive the private file **AFTER** the `TTL` time is up (> 59), the request has to do an additional DNS request
+    Since the `TTL` is very short, the attacker will make another request to retrieve the private file **AFTER** the `TTL` time is up (> 59), the request has to do an additional DNS request
 
     ```javascript
     setTimeout(function SOP_bypass() {
@@ -30,7 +32,7 @@ This normaly should by impossible due to [Same Origin Policy](https://en.wikiped
     ```
 
     However, by changing the DNS record in the meantime, the domain will resolve to the victim page with the local IP.
-        There is no more Same Origin Policy and we can retreive the content of the file.
+        There is no more Same Origin Policy and we can retrieve the content of the file.
 
 * the content is send to another domain to save the data
     ```javascript
