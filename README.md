@@ -7,7 +7,9 @@ This normaly should by impossible due to [Same Origin Policy](https://en.wikiped
 
 > This attack can be used to breach a private network by causing the victim's web browser to access machines at private IP addresses and returning the results to the attacker.
 
-![BY-SOP](BY-SOP.jpg)
+![BY-SOP](http://mpgn.fr/ressources/img/ByP-SOP.jpg)
+
+**Important** : use the same port, `127.0.0.1` is different from `127.0.0.1:8080`, same with https (check this [example](https://developer.mozilla.org/fr/docs/Web/JavaScript/Same_origin_policy_for_JavaScript))
 
 ### Victim:
 
@@ -45,14 +47,29 @@ This normaly should by impossible due to [Same Origin Policy](https://en.wikiped
     }, 180000); //3min to be sure
     ```
 
-    The file `save.php` need to allow Cross-origin resource sharing (CORS) to accept the request. In PHP it can be done by adding this line `header("Access-Control-Allow-Origin: *.domain.com");`
+    The file `save.php` don't need to allow Cross-origin resource sharing (CORS) from 127.0.0.1:80 to accept the request. In fact, img are incompatible with SOP. 
+    But if you really want an execption, in PHP it can be done by adding this line `header("Access-Control-Allow-Origin: *.domain.com");`
 
 
-* finally  
+* finally we have:
     ```bash
         cat save.txt
         {"WIN{AweSome_ByPass_SOP}":""}
     ```
+
+## Setup
+
+* Use the file `malicious.html`, the file `bypass_sop.html` is the same but more for academic comprehension.
+
+* Add a subdomain with TTL 59 (120 in Cloudflare)
+* Add another subdomain and allow CORS from your domain if you use GET or just use `image.src` to bypass the restriction CORS
+* Victim
+    - launch a local server `http-server -p 80 Dir`
+    - launch the browser
+    - go on sub.domain.com/malicious.html
+* Change the DNS ip
+* Wait
+* Get the result into the other subdomain you setup
 
 ## Contributor
 
@@ -60,7 +77,7 @@ This normaly should by impossible due to [Same Origin Policy](https://en.wikiped
 
 ## Licences
 
-[licence MIT](https://github.com/mpgn/BY-SOP/blob/master/LICENSE)
+[licence MIT](https://github.com/mpgn/ByP-SOP/blob/master/LICENSE)
 
 ## References
 
