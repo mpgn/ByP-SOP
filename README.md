@@ -7,8 +7,6 @@ This normaly should by impossible due to [Same Origin Policy](https://en.wikiped
 
 > This attack can be used to breach a private network by causing the victim's web browser to access machines at private IP addresses and returning the results to the attacker.
 
-![BY-SOP](http://mpgn.fr/ressources/img/ByP-SOP.jpg)
-
 **Important** : use the same port, `127.0.0.1` is different from `127.0.0.1:8080`, same with https (check this [example](https://developer.mozilla.org/fr/docs/Web/JavaScript/Same_origin_policy_for_JavaScript))
 
 ### Victim:
@@ -70,6 +68,8 @@ This normaly should by impossible due to [Same Origin Policy](https://en.wikiped
 * Change the DNS ip
 * Wait
 * Get the result into the other subdomain you setup
+
+![BY-SOP](http://mpgn.fr/assets/images/ByP-SOP.jpg)
 
 ## Contributor
 
