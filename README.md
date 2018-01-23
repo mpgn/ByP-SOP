@@ -2,6 +2,8 @@
 
 Bypass Same Origin Policy with DNS-rebinding to retrieve local server file.
 
+**EDIT 22/01/2018:** Another example from [@taviso](https://twitter.com/taviso), [RCE](https://bugs.chromium.org/p/project-zero/issues/detail?id=1471&desc=3) on Blizzard games using DNS-Rebinding.
+
 **EDIT 15/01/2018:** [@taviso](https://twitter.com/taviso) open a [pull a request](https://github.com/transmission/transmission/pull/468) to fix a security issue (Remote Code Execution on Transmission) using this vulnerability. I think it's cool to have an real example on how hacker can use this attack :)
 
 **Goal** : retrieve a file on a private server http://127.0.0.1/secret.txt 
