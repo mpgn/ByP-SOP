@@ -75,7 +75,9 @@ This normaly should by impossible due to [Same Origin Policy](https://en.wikiped
 * Wait
 * Get the result into the other subdomain you setup
 
-![BY-SOP](http://mpgn.fr/assets/images/ByP-SOP.jpg)
+
+![image](https://user-images.githubusercontent.com/5891788/53449161-87e47300-3a19-11e9-8e3c-7b7bdfeaab6b.png)
+
 
 ## Contributor
 
